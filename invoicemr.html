@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Tax Invoice</title>
+    <style>
+      /* ---------- Base & Layout ---------- */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        background: #f9f9f9;
+        padding: 10px;
+      }
+      .invoice-container {
+        max-width: 850px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      }
+
+      /* ---------- Header ---------- */
+      .main-heading {
+        text-align: center;
+        font-size: clamp(22px, 5vw, 28px);
+        font-weight: bold;
+        margin: 0 0 8px;
+      }
+      .sub-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .sub-header input {
+        width: 100%;
+        border: none;
+        border-bottom: 2px solid #ccc;
+        font-size: 16px;
+        padding: 4px 0;
+        text-align: center;
+        background: transparent;
+      }
+      .sub-header input:focus {
+        border-bottom-color: #007bff;
+        outline: none;
+      }
+
+      /* ---------- Table (Responsive) ---------- */
+      .details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+      .details-table th {
+        background: #f2f2f2;
+        font-weight: bold;
+        text-align: left;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      .details-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        vertical-align: top;
+      }
+
+      /* ---------- Form fields ---------- */
+      .field {
+        margin-bottom: 12px;
+      }
+      .field label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 4px;
+        color: #333;
+        font-size: 14px;
+      }
+      .field input,
+      .field textarea {
+        width: 100%;
+        padding: 7px 9px;
+        border: 1px solid #bbb;
+        border-radius: 4px;
+        font-size: 15px;
+      }
+      .field input:focus,
+      .field textarea:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+      }
+      .field textarea {
+        resize: vertical;
+        min-height: 60px;
+      }
+
+      .auto-select:focus {
+        user-select: all;
+      }
+
+      /* ---------- Print button ---------- */
+      .print-btn {
+        display: block;
+        margin: 25px auto 0;
+        padding: 10px 20px;
+        font-size: 16px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .print-btn:hover {
+        background: #0056b3;
+      }
+
+      /* ---------- RESPONSIVE BREAKPOINTS ---------- */
+      @media (max-width: 768px) {
+        .details-table,
+        .details-table thead,
+        .details-table tbody,
+        .details-table th,
+        .details-table td,
+        .details-table tr {
+          display: block;
+          width: 100%;
+        }
+        .details-table tr {
+          margin-bottom: 20px;
+        }
+        .details-table th {
+          display: none; /* hide column headers */
+        }
+        .details-table td {
+          border: none;
+          border-bottom: 1px solid #ddd;
+          position: relative;
+          padding-left: 50%; /* leave space for pseudo-label */
+        }
+        .details-table td::before {
+          content: attr(data-label);
+          position: absolute;
+          left: 10px;
+          width: 45%;
+          font-weight: bold;
+          color: #333;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .invoice-container {
+          padding: 15px;
+        }
+        .sub-header input {
+          font-size: 14px;
+        }
+        .field label {
+          font-size: 13px;
+        }
+        .field input,
+        .field textarea {
+          font-size: 14px;
+        }
+      }
+
+      /* ---------- PRINT STYLES ---------- */
+      @media print {
+        body {
+          background: #fff;
+          margin: 0;
+          padding: 0;
+        }
+        .invoice-container {
+          box-shadow: none;
+          border: none;
+        }
+        .print-btn {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-container">
+      <!-- Main Heading -->
+      <h1 contenteditable="true" class="main-heading">Tax Invoice</h1>
+
+      <!-- Company sub-header -->
+      <div class="sub-header">
+        <input
+          type="text"
+          placeholder="Company Name"
+          value="SRI GK NAGAI MALIGAI Pvt. Ltd."
+          class="auto-select"
+        />
+        <input
+          type="text"
+          placeholder="Address"
+          value="No. 27/1, Chokkappa Naicker Street, S Avani Moola St, Valaiyal Kadai, Madurai Main, Madurai, Tamil Nadu"
+          class="auto-select"
+        />
+        <input
+          type="text"
+          placeholder="GSTN"
+          value="33ACTFS6945D1ZQ"
+          class="auto-select"
+        />
+      </div>
+
+      <!-- Details Table -->
+      <table class="details-table">
+        <tr>
+          <th>Client Details</th>
+          <th>Billing Details</th>
+        </tr>
+        <tr>
+          <td data-label="Client Details">
+            <div class="field">
+              <label>BILL TO: (Name of the Client)</label>
+              <input
+                type="text"
+                placeholder="Client Name"
+                value="John Doe"
+                class="auto-select"
+              />
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input
+                type="email"
+                placeholder="client@example.com"
+                value="john.doe@example.com"
+                class="auto-select"
+              />
+            </div>
+            <div class="field">
+              <label>Phone No</label>
+              <input
+                type="tel"
+                placeholder="+1-123-456-7890"
+                value="+1-123-456-7890"
+                class="auto-select"
+              />
+            </div>
+            <div class="field">
+              <label>Address</label>
+              <textarea placeholder="Full address..." class="auto-select">
+456 Client Avenue, City, State, ZIP Code</textarea
+              >
+            </div>
+          </td>
+          <td data-label="Billing Details">
+            <div class="field">
+              <label>BILL NO:</label>
+              <input
+                type="text"
+                placeholder="INV-00123"
+                value="INV-00123"
+                class="auto-select"
+              />
+            </div>
+            <div class="field">
+              <label>Bill Date</label>
+              <input type="date" id="billDate" class="auto-select" />
+            </div>
+            <div class="field">
+              <label>Biller Name</label>
+              <input
+                type="text"
+                placeholder="Biller Name"
+                value="Jane Smith"
+                class="auto-select"
+              />
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <button class="print-btn">Print Invoice</button>
+    </div>
+
+    <script>
+      // Auto-select text on focus
+      document.querySelectorAll(".auto-select").forEach((el) => {
+        el.addEventListener("focus", function () {
+          this.select();
+        });
+      });
+
+      // Set today’s date if empty
+      const billDateInput = document.getElementById("billDate");
+      if (billDateInput && !billDateInput.value) {
+        billDateInput.value = new Date().toISOString().split("T")[0];
+      }
+
+      // Print handler
+      document
+        .querySelector(".print-btn")
+        .addEventListener("click", () => window.print());
+    </script>
+  </body>
+</html>
